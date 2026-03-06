@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>P★ Plataforma de Elite</title>
+    
+    <link rel="apple-touch-icon" href="https://img.icons8.com/ios-filled/512/FF0000/p.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Aprovação P★">
+
+    <style>
+        :root {
+            --brand-red: #ff3b30;
+            --bg-dark: #000000;
+            --card-bg: #1c1c1e;
+            --accent-blue: #0a84ff;
+            --success: #32d74b;
+            --text-main: #ffffff;
+            --text-dim: #8e8e93;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* HEADER PREMIUM COM LOGO P★ */
+        .header {
+            padding: 60px 20px 30px;
+            text-align: center;
+            background: linear-gradient(180deg, #1c1c1e 0%, #000 100%);
+        }
+
+        .logo-box {
+            position: relative;
+            display: inline-block;
+        }
+
+        .p-letter {
+            font-size: 85px;
+            font-weight: 900;
+            color: var(--brand-red);
+            line-height: 1;
+            margin: 0;
+            filter: drop-shadow(0 0 15px rgba(255, 59, 48, 0.4));
+        }
+
+        .star-top {
+            position: absolute;
+            top: -20px;
+            right: -10px;
+            color: #fff;
+            font-size: 32px;
+            text-shadow: 0 0 10px #fff;
+        }
+
+        /* DASHBOARD PRINCIPAL */
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .page { display: none; }
+        .page.active { display: block; animation: fadeInUp 0.4s ease-out; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title { font-size: 22px; font-weight: 700; margin-bottom: 20px; }
+
+        /* CARDS ESTILO APPLE */
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .card:active { transform: scale(0.97); background: #2c2c2e; }
+
+        .card h3 { margin: 0; font-size: 18px; }
+        .card p { margin: 5px 0 0; font-size: 14px; color: var(--text-dim); }
+
+        /* INTERFACE DE QUESTÕES COMENTADAS */
+        .q-header { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: var(--accent-blue); text-transform: uppercase; margin-bottom: 15px; }
+        .q-text { font-size: 19px; line-height: 1.5; margin-bottom: 25px; font-weight: 500; }
+
+        .btn-option {
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 12px;
+            border-radius: 15px;
+            border: 1px solid #3a3a3c;
+            background: #2c2c2e;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .feedback-box {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.05);
+            border-left: 5px solid var(--brand-red);
+        }
+
+        /* TOOLBAR INFERIOR (TAB BAR) */
+        .tab-bar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: rgba(28, 28, 30, 0.95);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0 calc(15px + env(safe-area-inset-bottom));
+            border-top: 0.5px solid rgba(255,255,255,0.1);
+            z-index: 1000;
+        }
+
+        .tab-item { text-align: center; color: var(--text-dim); font-size: 10px; text-decoration: none; border:none; background:none; }
+        .tab-item.active { color: var(--brand-red); }
+        .tab-icon { display: block; font-size: 20px; margin-bottom: 4px; }
+
+        /* POMODORO WIDGET */
+        .timer-widget {
+            background: var(--brand-red);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 10px;
+            font-family: 'SF Mono', monospace;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo-box">
+            <span class="star-top">★</span>
+            <h1 class="p-letter">P</h1>
+        </div>
+        <div style="font-size: 10px; color: var(--text-dim); letter-spacing: 4px; margin-top: 15px;">PLATAFORMA DE ELITE</div>
+    </header>
+
+    <div class="container">
+        
+        <div id="home" class="page active">
+            <h2 class="section-title">Escolha seu Objetivo</h2>
+            <div class="card" onclick="openArea('Policial')">
+                <h3>Carreiras Policiais</h3>
+                <p>PF, PRF, PC e PM (Foco em Direito Penal)</p>
+            </div>
+            <div class="card" onclick="openArea('Tribunais')">
+                <h3>Tribunais</h3>
+                <p>TJ, TRT e TRE (Foco em Processo e Constitucional)</p>
+            </div>
+            <div class="card" onclick="openArea('Administrativo')">
+                <h3>Administrativo</h3>
+                <p>Prefeituras, INSS e Autarquias</p>
+            </div>
+        </div>
+
+        <div id="subjects" class="page">
+            <h2 class="section-title" id="area-title">Matérias</h2>
+            <div id="subject-list"></div>
+        </div>
+
+        <div id="study" class="page">
+            <div class="q-box-content">
+                <div class="q-header">
+                    <span id="banca-tag">BANCA</span>
+                    <span id="subject-tag">MATÉRIA</span>
+                </div>
+                <p id="q-text" class="q-text">Aguardando questão...</p>
+                
+                <button class="btn-option" onclick="handleAnswer(true)">Certo</button>
+                <button class="btn-option" onclick="handleAnswer(false)">Errado</button>
+
+                <div id="feedback" class="feedback-box">
+                    <h4 id="feedback-title" style="margin:0 0 10px 0;"></h4>
+                    <p id="feedback-comment" style="font-size: 15px; line-height: 1.4; opacity: 0.9;"></p>
+                    <button class="btn-option" onclick="loadNextQuestion()" style="background: var(--accent-blue); text-align: center; border:none; margin-top:15px">Próxima Questão</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="errors" class="page">
+            <h2 class="section-title">Caderno de Erros</h2>
+            <p id="no-errors" style="color: var(--text-dim);">Você ainda não possui erros registrados. Bom trabalho!</p>
+            <div id="error-list"></div>
+        </div>
+    </div>
+
+    <nav class="tab-bar">
+        <button class="tab-item active" onclick="nav('home', this)">
+            <span class="tab-icon">🎯</span>Cargos
+        </button>
+        <button class="tab-item" onclick="nav('study', this)">
+            <span class="tab-icon">📝</span>Praticar
+        </button>
+        <button class="tab-item" onclick="nav('errors', this)">
+            <span class="tab-icon">📕</span>Erros
+        </button>
+        <div class="tab-item" onclick="togglePomodoro()">
+            <span class="timer-widget" id="timer-val">25:00</span>
+            <span style="display:block; margin-top:4px;">Pomodoro</span>
+        </div>
+    </nav>
+
+    <script>
+        // BANCO DE DADOS INTEGRADO (ESTILO QCONCURSOS)
+        const database = {
+            "Português": [
+                { b: "FGV", t: "A frase 'Onde você mora?' utiliza corretamente o advérbio relativo?", r: true, c: "Correto. 'Onde' indica lugar fixo. Se houvesse movimento, seria 'Aonde'." },
+                { b: "CEBRASPE", t: "A crase é facultativa em 'Entreguei o livro à Maria'?", r: true, c: "Correto. Antes de nomes próprios femininos, o uso do artigo é facultativo, logo, a crase também." }
+            ],
+            "Direito Administrativo": [
+                { b: "FGV", t: "O silêncio administrativo é considerado ato jurídico em qualquer hipótese?", r: false, c: "Errado. O silêncio só produz efeitos jurídicos se a lei expressamente o prever." },
+                { b: "CEBRASPE", t: "A autoexecutoriedade é um atributo de todos os atos administrativos?", r: false, c: "Falso. Nem todos os atos possuem esse atributo, como é o caso da cobrança de multas." }
+            ],
+            "Direito Penal": [
+                { b: "FCC", t: "Não há crime sem lei anterior que o defina. Este é o princípio da Anterioridade?", r: true, c: "Sim. Art. 1º do Código Penal e Art. 5º, XXXIX da CF/88." }
+            ]
+        };
+
+        let currentSubject = "Português";
+        let errors = JSON.parse(localStorage.getItem('p_star_errors')) || [];
+        let timerSeconds = 25 * 60;
+        let timerOn = false;
+        let timerInt;
+
+        function nav(pageId, el) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            if(el) el.classList.add('active');
+            if(pageId === 'errors') renderErrors();
+        }
+
+        function openArea(area) {
+            const list = document.getElementById('subject-list');
+            const mats = area === 'Policial' ? ["Português", "Direito Penal", "Direito Administrativo"] : ["Português", "Direito Administrativo"];
+            document.getElementById('area-title').innerText = area;
+            list.innerHTML = "";
+            mats.forEach(m => {
+                list.innerHTML += `<div class="card" onclick="startSubject('${m}')"><h3>${m}</h3><p>Iniciar bateria de questões</p></div>`;
+            });
+            nav('subjects');
+        }
+
+        function startSubject(m) {
+            currentSubject = m;
+            loadNextQuestion();
+            nav('study');
+        }
+
+        function loadNextQuestion() {
+            const pool = database[currentSubject] || database["Português"];
+            const q = pool[Math.floor(Math.random() * pool.length)];
+            document.getElementById('banca-tag').innerText = `BANCA ${q.b}`;
+            document.getElementById('subject-tag').innerText = currentSubject;
+            document.getElementById('q-text').innerText = q.t;
+            document.getElementById('feedback').style.display = "none";
+            window.currentQ = q;
+        }
+
+        function handleAnswer(ans) {
+            const q = window.currentQ;
+            const feedback = document.getElementById('feedback');
+            feedback.style.display = "block";
+            
+            if(ans === q.r) {
+                document.getElementById('feedback-title').innerText = "✓ ACERTOU!";
+                document.getElementById('feedback-title').style.color = "var(--success)";
+            } else {
+                document.getElementById('feedback-title').innerText = "✕ ERROU!";
+                document.getElementById('feedback-title').style.color = "var(--brand-red)";
+                saveError(q);
+            }
+            document.getElementById('feedback-comment').innerText = q.c;
+        }
+
+        function saveError(q) {
+            if(!errors.find(e => e.t === q.t)) {
+                errors.push(q);
+                localStorage.setItem('p_star_errors', JSON.stringify(errors));
+            }
+        }
+
+        function renderErrors() {
+            const container = document.getElementById('error-list');
+            container.innerHTML = "";
+            if(errors.length === 0) {
+                document.getElementById('no-errors').style.display = "block";
+            } else {
+                document.getElementById('no-errors').style.display = "none";
+                errors.forEach(e => {
+                    container.innerHTML += `<div class="card" style="border-left: 4px solid var(--brand-red)"><h3>${e.b}</h3><p>${e.t}</p><small style="color:var(--success)">Gabarito: ${e.r ? 'Certo' : 'Errado'}</small></div>`;
+                });
+            }
+        }
+
+        function togglePomodoro() {
+            if(timerOn) {
+                clearInterval(timerInt);
+            } else {
+                timerInt = setInterval(() => {
+                    timerSeconds--;
+                    let m = Math.floor(timerSeconds/60);
+                    let s = timerSeconds % 60;
+                    document.getElementById('timer-val').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+                    if(timerSeconds <= 0) { clearInterval(timerInt); alert("Ciclo completo!"); }
+                }, 1000);
+            }
+            timerOn = !timerOn;
+        }
+    </script>
+</body>
+</html>
